@@ -101,7 +101,8 @@ if user_uploads :
             #chain
             st.session_state.converstaion = get_conversation_chain(vectorestore)            
             st.success("준비완료")
-        
+
+user_query = ""  
 if user_query:= st.chat_input('프로젝트에 대한 설명을 해주세요') :
     if 'conversation' in st.session_state:
         with st.spinner('답변 준비중이에요.'):
