@@ -57,7 +57,7 @@ def get_conversation_chain(vectorstore):
             {context}
         사용자 질문:
             {question}
-        답변:
+        답변: 위에 해당하는 적절한 프로젝트 팀 이름 5개 리스트로 보여줘
         """
     )
 
@@ -108,7 +108,7 @@ if user_query:= st.chat_input('프로젝트에 대한 설명을 해주세요') :
         with st.spinner('답변 준비중이에요.'):
             result = st.session_state.conversation.invoke({"query" : user_query})
             response = result['result']
-            img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
+            img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 그려줘")
             st.image(img_url)
             st.write(response)
     else :
