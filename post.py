@@ -101,18 +101,19 @@ if user_uploads :
             #chain
             st.session_state.converstaion = get_conversation_chain(vectorestore)            
             st.success("준비완료")
-        if user_query:= st.chat_input('프로젝트에 대한 설명을 해주세요') :
-            if 'chain' in st.session_state:
-                with st.spinner('답변 준비중이에요.'):
-                    result = st.session_state.conversation.invoke({"query" : user_query})
-                    response = result['result']
-                    img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
-                    st.write(response)
-                    st.image(img_url)
-            else :
-                response = "PDF를 먼저 업로드해 주세요! 🥺"
-                st.write(response)
+        
+if user_query:= st.chat_input('프로젝트에 대한 설명을 해주세요') :
+    if 'conversation' in st.session_state:
+        with st.spinner('답변 준비중이에요.'):
+            result = st.session_state.conversation.invoke({"query" : user_query})
+            response = result['result']
+            st.write(response)
+    else :
+        response = "PDF를 먼저 업로드해 주세요! 🥺"
+        st.write(response)
 
+img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
+st.image(img_url)
 # with st.form("프로젝트에 대해 설명해주세요."):
 #     domain = st.text_input("프로젝트 도메인을 알려주세요",placeholder="금융, 여행 등...")
 #     description = st.text_area("프로젝트에 대한 설명을 해주세요", placeholder="여행지에서 사람들과 대화할 수 있는 서비스야")
