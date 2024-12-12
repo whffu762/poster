@@ -99,7 +99,7 @@ if user_uploads :
             #embed & store
             vectorestore = get_vectorstore(chunks)
             #chain
-            st.session_state.converstaion = get_conversation_chain(vectorestore)            
+            st.session_state.conversation = get_conversation_chain(vectorestore)            
             st.success("준비완료")
 
 user_query = ""  
@@ -108,13 +108,13 @@ if user_query:= st.chat_input('프로젝트에 대한 설명을 해주세요') :
         with st.spinner('답변 준비중이에요.'):
             result = st.session_state.conversation.invoke({"query" : user_query})
             response = result['result']
+            img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
+            st.image(img_url)
             st.write(response)
     else :
         response = "PDF를 먼저 업로드해 주세요! 🥺"
         st.write(response)
 
-# img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
-# st.image(img_url)
 
 # with st.form("프로젝트에 대해 설명해주세요."):
 #     domain = st.text_input("프로젝트 도메인을 알려주세요",placeholder="금융, 여행 등...")
