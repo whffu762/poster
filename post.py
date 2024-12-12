@@ -52,7 +52,7 @@ def get_conversation_chain(vectorstore):
     custom_prompt = PromptTemplate(
         input_variables=["context", "question"], # 필수 변수: 검색 결과(context)와 질문(query)
         template="""
-            
+            입력받은 PDF는 너가 팀명 및 팀 설명을 만들 때 참고할 데이터임
         참고할 문서 내용:
             {context}
         사용자 질문:
