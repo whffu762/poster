@@ -52,7 +52,7 @@ def get_conversation_chain(vectorstore):
     custom_prompt = PromptTemplate(
         input_variables=["context", "question"], # 필수 변수: 검색 결과(context)와 질문(query)
         template="""
-            입력받은 PDF는 너가 팀명 및 팀 설명을 만들 때 참고할 데이터임
+            입력받은 PDF는 너가 팀명 및 팀 설명을 만들 때 참고할 데이터ㅇ
         참고할 문서 내용:
             {context}
         사용자 질문:
@@ -101,19 +101,29 @@ if user_uploads :
             #chain
             st.session_state.converstaion = get_conversation_chain(vectorestore)            
             st.success("준비완료")
+        if user_query:= st.chat_input('프로젝트에 대한 설명을 해주세요') :
+            if 'chain' in st.session_state:
+                with st.spinner('답변 준비중이에요.'):
+                    result = st.session_state.conversation.invoke({"query" : user_query})
+                    response = result['result']
+                    img_url = getImageFromGpt(user_query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
+                    st.write(response)
+                    st.image(img_url)
+            else :
+                response = "PDF를 먼저 업로드해 주세요! 🥺"
+                st.write(response)
 
+# with st.form("프로젝트에 대해 설명해주세요."):
+#     domain = st.text_input("프로젝트 도메인을 알려주세요",placeholder="금융, 여행 등...")
+#     description = st.text_area("프로젝트에 대한 설명을 해주세요", placeholder="여행지에서 사람들과 대화할 수 있는 서비스야")
+#     submitted = st.form_submit_button("제출")
 
-with st.form("프로젝트에 대해 설명해주세요."):
-    domain = st.text_input("프로젝트 도메인을 알려주세요",placeholder="금융, 여행 등...")
-    description = st.text_area("프로젝트에 대한 설명을 해주세요", placeholder="여행지에서 사람들과 대화할 수 있는 서비스야")
-    submitted = st.form_submit_button("제출")
-
-    if submitted:
-        query = '프로젝트는 '+ domain +'에 관련된 프로젝트야.' + "자세한 설명은 다음과 같아" + description
-            
-        with st.spinner("답변 준비 중") :
-            result = st.session_state.conversation.invoke({"query" : query})
-            response = result['result']
-        img_url = getImageFromGpt(query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
-        st.write(response)
-        st.image(img_url)
+#     if submitted:
+#         query = '프로젝트는 '+ domain +'에 관련된 프로젝트야.' + "자세한 설명은 다음과 같아" + description
+        
+#         with st.spinner("답변 준비 중") :
+#             result = st.session_state.conversation.invoke({"query" : query})
+#             response = result['result']
+#         img_url = getImageFromGpt(query + "이 프로젝트를 진행하는 팀 로고를 5개 그려줘")
+#         st.write(response)
+#         st.image(img_url)
